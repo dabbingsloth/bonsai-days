@@ -461,12 +461,8 @@
     }
     hint.textContent = 'Hold the button (or Space) to pour. Let go when the water reaches the green zone.';
     $('#canRest', svg).style.display = 'none';
-    const pourX = 500 - Math.max(30, lastPot.w * 0.3);
-    const canX = pourX - 122, canY = soilY - 92;
-    const streamCol = era === 2 ? '#111' : era === 3 ? '#9ff0ff' : '#5f8fcf';
-    fx.innerHTML = `<g id="pourCan" transform="translate(${canX} ${canY}) rotate(10)">${BD.scene.wateringCan(era)}</g>
-      <path id="stream" d="M${f(pourX)} ${canY + 19} L${f(pourX)} ${soilY - 2}" stroke="${streamCol}" stroke-width="${era === 2 ? 3 : 4}" stroke-dasharray="${era === 2 ? '6 8' : '10 6'}" stroke-linecap="round" opacity="0" ${era === 3 ? 'filter="url(#glow)"' : ''}>
-        <animate attributeName="stroke-dashoffset" from="0" to="-32" dur=".35s" repeatCount="indefinite"/></path>`;
+    const pourX = 500 - clamp(lastPot.w * 0.22, 30, 70);
+    fx.innerHTML = BD.scene.pourMarkup(era, pourX, soilY, false);
     const can = $('#pourCan', fx), stream = $('#stream', fx);
     const drip = $('#dripG', svg);
     const dripCol = era === 2 ? '#111' : era === 3 ? '#9ff0ff' : '#5f8fcf';
@@ -481,8 +477,8 @@
       gauge.dataset.level = level.toFixed(3);
       soilTint(level / hi);
       drip.style.display = level > lo * 0.92 ? '' : 'none';
-      can.setAttribute('transform', `translate(${canX} ${canY}) rotate(${holding ? 45 : 10})`);
-      stream.setAttribute('opacity', holding ? 0.9 : 0);
+      can.setAttribute('transform', holding ? can.dataset.pour : can.dataset.idle);
+      stream.setAttribute('opacity', holding ? 1 : 0);
     };
     let resolveDone;
     const finished = new Promise((r) => (resolveDone = r));
@@ -537,7 +533,7 @@
     }
     btn.disabled = true;
     stream.setAttribute('opacity', 0);
-    can.setAttribute('transform', `translate(${canX} ${canY}) rotate(10)`);
+    can.setAttribute('transform', can.dataset.idle);
     await sleep(1600, id);
     fx.innerHTML = '';
     drip.style.display = 'none';
@@ -722,7 +718,7 @@
     const base = { species: st.species, seed: st.seed, g: 1, style: st.choices.style || 'informal', sweep: st.choices.sweep, sun: st.choices.sun, season: 'late', ramif: st.ramif };
     const bgs = {
       1: `<rect x="-300" y="-470" width="600" height="640" fill="#efe3c6"/><rect x="-300" y="-470" width="600" height="120" fill="url(#bokashi-e)"/><circle cx="170" cy="-330" r="44" fill="#c23a28"/><rect x="-300" y="60" width="600" height="110" fill="#b08a5a"/><rect x="-300" y="-470" width="600" height="640" fill="#fff" filter="url(#paperfx)" opacity=".5"/>`,
-      2: `<rect x="-300" y="-470" width="600" height="640" fill="#fff"/><rect x="-300" y="-470" width="600" height="200" fill="url(#tone-s)" opacity=".6"/><rect x="-300" y="60" width="600" height="110" fill="url(#hatch-w)"/><path d="M-300 60H300" stroke="#111" stroke-width="3"/>`,
+      2: `<rect x="-300" y="-470" width="600" height="640" fill="#fff"/><rect x="-300" y="-470" width="600" height="200" fill="#efefef"/><rect x="-300" y="60" width="600" height="110" fill="#dcdcdc"/><path d="M-300 60H300" stroke="#111" stroke-width="3"/>`,
       3: `<rect x="-300" y="-470" width="600" height="640" fill="url(#epi3)"/><circle cx="-160" cy="-320" r="120" fill="#fff" opacity=".12"/><rect x="-300" y="60" width="600" height="110" fill="#2a1f3a" opacity=".7"/>`,
     };
     const trip = [1, 2, 3].map((e) => {

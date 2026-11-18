@@ -23,10 +23,12 @@
       sill: '#9a6a42', sillTop: '#b88656', grain: '#6a4428', shoji: '#f3ead2', kumiko: '#6a4a30',
       mountain: '#35558a', mountainShade: '#26406c', snow: '#f4ecd8', hill: '#5c7a48', hill2: '#7a9458', mist: '#f3e7cc',
       gwall: '#e6d6b0', roof: '#3e4450', bamboo: '#6a9a3e', bambooDark: '#46702a', bLeaf: '#4f7f30', stone: '#9a978a', stoneDark: '#6f6c62', stoneLight: '#bdb9aa' },
-    2: { wall: '#ffffff', wallDark: 'url(#tone-s)', wood: '#ffffff', woodLight: '#ffffff', woodDark: '#111', line: '#111', lw: 3,
-      sill: '#ffffff', sillTop: '#ffffff', grain: '#111', shoji: '#ffffff', kumiko: '#111',
-      mountain: '#ffffff', mountainShade: 'url(#hatch-w)', snow: '#ffffff', hill: 'url(#tone-m)', hill2: 'url(#tone-w)', mist: '#ffffff',
-      gwall: '#ffffff', roof: '#111', bamboo: '#111', bambooDark: '#fff', bLeaf: '#111', stone: '#ffffff', stoneDark: 'url(#tone-m)', stoneLight: '#fff' },
+    // Manga: white paper, black ink for the room, light grey ink for the view outside, a few FLAT greys.
+    // (Fine dot screens shimmer on screens, so the scene doesn't use them.)
+    2: { wall: '#ffffff', wallDark: '#ececec', wood: '#ffffff', woodLight: '#ffffff', woodDark: '#111', line: '#111', lw: 2.2,
+      sill: '#d4d4d4', sillTop: '#ffffff', grain: '#8a8a8a', shoji: '#ffffff', kumiko: '#a8a8a8',
+      mountain: '#ffffff', mountainShade: '#e6e6e6', snow: '#ffffff', hill: '#f3f3f3', hill2: '#ffffff', mist: '#ffffff',
+      gwall: '#ffffff', roof: '#2a2a2a', bamboo: '#ffffff', bambooDark: '#b0b0b0', bLeaf: '#ffffff', stone: '#ffffff', stoneDark: '#d6d6d6', stoneLight: '#fff' },
     3: { wall: '#ead7c0', wallDark: '#cdb196', wood: '#6b4632', woodLight: '#9a6a4a', woodDark: '#3d261b', line: 'none', lw: 0,
       sill: '#9c6a46', sillTop: '#c4915e', grain: '#7a5034', shoji: '#fbf3e6', kumiko: '#8a6448',
       mountain: '#5f7fb8', mountainShade: '#45639a', snow: '#f8f4ff', hill: '#4f8a64', hill2: '#79aa78', mist: '#ffffff',
@@ -43,11 +45,11 @@
     let s = '';
     // sky
     s += `<rect x="${WIN.x0 - 20}" y="${WIN.y0 - 20}" width="${WIN.x1 - WIN.x0 + 40}" height="${WIN.y1 - WIN.y0 + 40}" fill="url(#skyG)"/>`;
-    if (era === 2) s += `<rect id="skyTone" x="${WIN.x0 - 20}" y="${WIN.y0 - 20}" width="560" height="450" fill="url(#tone-s)" opacity="0"/>`;
+    if (era === 2) s += `<rect id="skyTone" x="${WIN.x0 - 20}" y="${WIN.y0 - 20}" width="560" height="450" fill="#a0a0a0" opacity="0"/>`;
     if (era === 1) s += `<rect x="${WIN.x0 - 20}" y="${WIN.y0 - 20}" width="560" height="70" fill="url(#bokashi)"/>`;
     // sun
     if (era === 1) s += `<circle id="sun" cx="300" cy="300" r="26" fill="#d9472b"/>`;
-    else if (era === 2) s += `<g id="sun"><g id="sunRays">${Array.from({ length: 24 }, (_, i) => { const a = (i / 24) * Math.PI * 2; return `<path d="M${f(Math.cos(a) * 36)} ${f(Math.sin(a) * 36)}L${f(Math.cos(a) * (60 + (i % 2) * 22))} ${f(Math.sin(a) * (60 + (i % 2) * 22))}" stroke="#111" stroke-width="2"/>`; }).join('')}</g><circle r="28" fill="#fff" stroke="#111" stroke-width="3"/></g>`;
+    else if (era === 2) s += `<g id="sun"><g id="sunRays">${Array.from({ length: 24 }, (_, i) => { const a = (i / 24) * Math.PI * 2; return `<path d="M${f(Math.cos(a) * 36)} ${f(Math.sin(a) * 36)}L${f(Math.cos(a) * (60 + (i % 2) * 22))} ${f(Math.sin(a) * (60 + (i % 2) * 22))}" stroke="#777" stroke-width="1.3"/>`; }).join('')}</g><circle r="28" fill="#fff" stroke="#555" stroke-width="1.8"/></g>`;
     else s += `<g id="sun"><circle r="90" fill="url(#sunGlow)"/><circle r="26" fill="#fff6dc"/></g>`;
     // stars/moon for evening in era 3 are added via opacity group
     if (era === 3) {
@@ -60,7 +62,7 @@
         s += `<rect x="${x}" y="${y}" width="${w}" height="16" rx="8" fill="${P.mist}" opacity=".9" ${S(0.5)}/>`;
       });
     } else if (era === 2) {
-      s += `<path d="M260 140q20 -22 50 -8q18 -24 50 -4q30 -6 30 14Z" fill="#fff" stroke="#111" stroke-width="2.5"/><path d="M560 110q22 -18 48 -4q20 -20 46 0q24 0 22 14Z" fill="#fff" stroke="#111" stroke-width="2.5"/>`;
+      s += `<path d="M260 140q20 -22 50 -8q18 -24 50 -4q30 -6 30 14Z" fill="#fff" stroke="#666" stroke-width="1.3"/><path d="M560 110q22 -18 48 -4q20 -20 46 0q24 0 22 14Z" fill="#fff" stroke="#666" stroke-width="1.3"/>`;
     } else {
       s += `<g opacity=".55" filter="url(#blur4)"><ellipse cx="330" cy="140" rx="90" ry="14" fill="#fff"/><ellipse cx="600" cy="110" rx="120" ry="16" fill="#fff"/><ellipse cx="480" cy="335" rx="220" ry="14" fill="#fff"/></g>`;
     }
@@ -83,18 +85,17 @@
     // garden wall with tile roof (tsuiji-bei)
     s += `<rect x="200" y="420" width="600" height="60" fill="${P.gwall}" ${S()}/>`;
     s += `<path d="M196 424 L206 408 H794 L804 424Z" fill="${P.roof}" ${S()}/>`;
-    if (era !== 3) for (let x = 212; x < 800; x += 14) s += `<path d="M${x} 410v12" stroke="${era === 2 ? '#fff' : '#2a2e38'}" stroke-width="1.5"/>`;
-    if (era === 2) s += `<rect x="200" y="452" width="600" height="28" fill="url(#hatch)" opacity=".6"/>`;
+    if (era !== 3) for (let x = 212; x < 800; x += 14) s += `<path d="M${x} 410v12" stroke="${era === 2 ? '#777' : '#2a2e38'}" stroke-width="1.5"/>`;
     // bamboo grove (right) and a few stalks (left)
     const R = rng(21);
     const stalks = [[640, 11], [668, 9], [700, 13], [735, 10], [756, 12], [258, 9], [282, 7]];
     let bam = '';
     stalks.forEach(([x, w], i) => {
       const lean = (R() - 0.5) * 16;
-      bam += `<path d="M${x} 480 L${f(x + lean)} 40 L${f(x + lean + w)} 40 L${x + w} 480Z" fill="${i % 2 ? P.bamboo : era === 2 ? '#111' : mix(P.bamboo, '#2f4f20', 0.25)}" ${S(0.6)}/>`;
+      bam += `<path d="M${x} 480 L${f(x + lean)} 40 L${f(x + lean + w)} 40 L${x + w} 480Z" fill="${i % 2 || era === 2 ? P.bamboo : mix(P.bamboo, '#2f4f20', 0.25)}" ${S(0.6)}/>`;
       for (let y = 450; y > 50; y -= 38 + R() * 10) {
         const xx = x + (lean * (480 - y)) / 440;
-        bam += `<path d="M${f(xx - 1)} ${f(y)}h${w + 2}" stroke="${era === 2 ? '#fff' : P.bambooDark}" stroke-width="2"/>`;
+        bam += `<path d="M${f(xx - 1)} ${f(y)}h${w + 2}" stroke="${P.bambooDark}" stroke-width="${era === 2 ? 1.2 : 2}"/>`;
       }
     });
     // bamboo leaves: narrow blades in sprays
@@ -106,7 +107,7 @@
       const L = 22 + R() * 14;
       leaves += `<path transform="translate(${f(x)} ${f(y)}) rotate(${f(a)})" d="M0 0 Q${f(L * 0.5)} -4 ${f(L)} 0 Q${f(L * 0.5)} 4 0 0Z"/>`;
     }
-    s += `<g id="bamboo">${bam}<g fill="${P.bLeaf}" ${era === 2 ? 'stroke="#111" stroke-width="1"' : era === 1 ? 'stroke="#2f4f1c" stroke-width=".6"' : 'opacity=".9"'}>${leaves}</g></g>`;
+    s += `<g id="bamboo">${bam}<g fill="${P.bLeaf}" ${era === 2 ? 'stroke="#777" stroke-width=".9"' : era === 1 ? 'stroke="#2f4f1c" stroke-width=".6"' : 'opacity=".9"'}>${leaves}</g></g>`;
     // stone lantern (kasuga-style tōrō)
     const lx = 330, ly = 478;
     const st = era === 3 ? 'url(#stoneG)' : P.stone;
@@ -138,20 +139,19 @@
       let k = '';
       for (let i = 1; i < 4; i++) k += `M${f(a + ((b - a) * i) / 4)} ${WIN.y0}V${WIN.y1}`;
       for (let j = 1; j < 7; j++) k += `M${a} ${f(WIN.y0 + ((WIN.y1 - WIN.y0) * j) / 7)}H${b}`;
-      s += `<path d="${k}" stroke="${P.kumiko}" stroke-width="${era === 2 ? 1.6 : 2}" fill="none" ${era === 3 ? 'opacity=".55"' : ''}/>`;
-      s += `<rect x="${a}" y="${WIN.y0 - 2}" width="${b - a}" height="${WIN.y1 - WIN.y0 + 4}" fill="none" stroke="${era === 2 ? '#111' : P.woodDark}" stroke-width="${era === 2 ? 3 : 7}"/>`;
-      if (era === 2) s += `<rect x="${a + 4}" y="${WIN.y0 + 260}" width="${b - a - 8}" height="${WIN.y1 - WIN.y0 - 262}" fill="url(#tone-s)" opacity=".7"/>`;
+      s += `<path d="${k}" stroke="${P.kumiko}" stroke-width="${era === 2 ? 1.1 : 2}" fill="none" ${era === 3 ? 'opacity=".55"' : ''}/>`;
+      s += `<rect x="${a}" y="${WIN.y0 - 2}" width="${b - a}" height="${WIN.y1 - WIN.y0 + 4}" fill="none" stroke="${era === 2 ? '#111' : P.woodDark}" stroke-width="${era === 2 ? 2 : 7}"/>`;
     });
     // posts (hashira) and lintel (nageshi)
     s += `<rect x="-600" y="0" width="2200" height="26" fill="${woodFill}" ${S()}/>`;
     [92, 882].forEach((x) => (s += `<rect x="${x}" y="0" width="28" height="1600" fill="${woodFill}" ${S()}/>`));
-    if (era === 2) [92, 882].forEach((x) => (s += `<rect x="${x + 14}" y="26" width="14" height="1600" fill="url(#hatch)"/>`));
+    if (era === 2) [92, 882].forEach((x) => (s += `<rect x="${x + 17}" y="26" width="10" height="1600" fill="#d8d8d8"/>`));
     // hanging scroll (kakejiku) — right of window
     const sx = 940;
     s += `<g id="scroll">
       <path d="M${sx + 70} 34 L${sx + 40} 54 M${sx + 70} 34 L${sx + 100} 54" stroke="${era === 2 ? '#111' : '#4a3a2a'}" stroke-width="1.5"/>
       <rect x="${sx + 34}" y="52" width="72" height="8" rx="3" fill="${era === 2 ? '#111' : P.woodDark}"/>
-      <rect x="${sx + 30}" y="60" width="80" height="330" fill="${era === 1 ? '#5a6a4a' : era === 2 ? 'url(#tone-m)' : '#3c4a6a'}" ${S()}/>
+      <rect x="${sx + 30}" y="60" width="80" height="330" fill="${era === 1 ? '#5a6a4a' : era === 2 ? '#bdbdbd' : '#3c4a6a'}" ${S()}/>
       <rect x="${sx + 40}" y="84" width="60" height="276" fill="${era === 3 ? '#f8f2e8' : P.shoji}" ${S(0.6)}/>
       <text x="${sx + 70}" y="104" font-family="'Shippori Mincho','Yu Mincho',serif" font-size="30" fill="${era === 3 ? '#2a2d40' : '#1a1410'}" writing-mode="vertical-rl" text-anchor="start" letter-spacing="8">一期一会</text>
       <circle cx="${sx + 82}" cy="340" r="0"/>
@@ -163,8 +163,7 @@
     let k2 = '';
     for (let x = -380; x < 92; x += 46) k2 += `M${x} 26V1600`;
     for (let y = 80; y < 1600; y += 62) k2 += `M-420 ${y}H92`;
-    s += `<path d="${k2}" stroke="${P.kumiko}" stroke-width="${era === 2 ? 1.5 : 2}" fill="none" opacity="${era === 3 ? 0.4 : 0.9}"/>`;
-    if (era === 2) s += `<rect x="-420" y="26" width="512" height="1600" fill="url(#tone-s)" opacity=".35"/>`;
+    s += `<path d="${k2}" stroke="${P.kumiko}" stroke-width="${era === 2 ? 1.1 : 2}" fill="none" opacity="${era === 3 ? 0.4 : 0.9}"/>`;
     // sill
     s += `<path d="M120 ${SILL_Y - 18} H880 L896 ${SILL_Y + 2} H104Z" fill="${era === 3 ? 'url(#sillTopG)' : P.sillTop}" ${S()}/>`;
     s += `<rect x="100" y="${SILL_Y + 2}" width="800" height="22" fill="${era === 3 ? 'url(#sillG)' : P.sill}" ${S()}/>`;
@@ -172,12 +171,10 @@
     const R = rng(3);
     for (let i = 0; i < 9; i++) { const y = SILL_Y - 14 + i * 1.9; const x = 130 + R() * 500; grain += `M${f(x)} ${f(y)}q60 ${f((R() - 0.5) * 3)} ${f(120 + R() * 140)} 0`; }
     for (let i = 0; i < 5; i++) { const y = SILL_Y + 7 + i * 3.4; const x = 110 + R() * 400; grain += `M${f(x)} ${f(y)}q80 ${f((R() - 0.5) * 3)} ${f(160 + R() * 220)} 0`; }
-    s += `<path d="${grain}" stroke="${P.grain}" stroke-width="${era === 2 ? 1.2 : 1}" fill="none" opacity="${era === 3 ? 0.35 : 0.7}"/>`;
-    if (era === 2) s += `<rect x="100" y="${SILL_Y + 2}" width="800" height="22" fill="url(#hatch)" opacity=".5"/>`;
+    s += `<path d="${grain}" stroke="${P.grain}" stroke-width="${era === 2 ? 0.8 : 1}" fill="none" opacity="${era === 3 ? 0.35 : 0.7}"/>`;
     // wainscot below
-    s += `<rect x="-600" y="${SILL_Y + 24}" width="2200" height="1400" fill="${era === 2 ? '#fff' : era === 3 ? 'url(#lowG)' : P.woodDark}" ${S()}/>`;
-    if (era === 2) s += `<rect x="-600" y="${SILL_Y + 24}" width="2200" height="1400" fill="url(#tone-m)" opacity=".85"/>`;
-    for (let x = -560; x < 1600; x += 120) s += `<path d="M${x} ${SILL_Y + 24}V2000" stroke="${era === 2 ? '#111' : era === 3 ? 'rgba(0,0,0,.18)' : '#24150e'}" stroke-width="2"/>`;
+    s += `<rect x="-600" y="${SILL_Y + 24}" width="2200" height="1400" fill="${era === 2 ? '#e6e6e6' : era === 3 ? 'url(#lowG)' : P.woodDark}" ${S()}/>`;
+    for (let x = -560; x < 1600; x += 120) s += `<path d="M${x} ${SILL_Y + 24}V2000" stroke="${era === 2 ? '#b5b5b5' : era === 3 ? 'rgba(0,0,0,.18)' : '#24150e'}" stroke-width="${era === 2 ? 1.4 : 2}"/>`;
     // tools on the sill: scissors (left)
     const tc = era === 2 ? '#111' : era === 3 ? '#2a2a35' : '#2a2420';
     s += `<g transform="translate(205 ${SILL_Y - 9}) rotate(-8)" fill="none" stroke="${tc}" stroke-width="3" stroke-linecap="round">
@@ -185,18 +182,87 @@
     return s;
   }
 
-  // ---------- watering can (jōro), drawn in place or tilted while pouring ----------
+  // ---------- watering can (jōro): copper body, long spout, sprinkler rose ----------
+  const ROSE = [136, -100]; // centre of the rose, in the can's own coordinates (origin = bottom of the body)
+  const SPOUT_ANG = -38.7; // spout direction, degrees
   function wateringCan(era) {
-    const c = era === 2 ? '#fff' : era === 3 ? 'url(#canG)' : '#b0703a';
-    const l = era === 2 ? '#111' : era === 1 ? '#24170f' : 'none';
-    const lw = era === 2 ? 3 : 1.5;
-    return `<g class="can" stroke="${l}" stroke-width="${lw}" stroke-linejoin="round">
-      <path d="M-34 -40 h68 l-6 46 h-56Z" fill="${c}"/>
-      <path d="M30 -30 L96 -74 L100 -68 L36 -18Z" fill="${c}"/>
-      <ellipse cx="100" cy="-73" rx="7" ry="10" transform="rotate(-35 100 -73)" fill="${era === 2 ? '#111' : '#7a4a24'}"/>
-      <path d="M-30 -40 Q0 -86 30 -40" fill="none" stroke-width="${era === 2 ? 5 : 6}" stroke="${era === 2 ? '#111' : era === 3 ? '#c48a54' : '#8a5428'}"/>
-      ${era === 2 ? '<rect x="-30" y="-20" width="58" height="22" fill="url(#hatch)" stroke="none"/>' : ''}
+    const c = era === 2 ? '#fff' : era === 3 ? 'url(#canG)' : '#b0683a';
+    const cflat = era === 2 ? '#fff' : era === 3 ? '#c7814c' : '#b0683a';
+    const cd = era === 2 ? '#c4c4c4' : era === 3 ? '#7a3e1e' : '#7a4224';
+    const cl = era === 2 ? '#fff' : era === 3 ? '#ffd6a8' : '#e0a26c';
+    const l = era === 2 ? '#111' : era === 1 ? '#24170f' : 'rgba(70,30,10,.6)';
+    const lw = era === 2 ? 1.8 : era === 1 ? 1.4 : 0.9;
+    const S = `stroke="${l}" stroke-width="${lw}" stroke-linejoin="round"`;
+    const tube = (d, w) => `<path d="${d}" fill="none" stroke="${l}" stroke-width="${w + lw * 2}" stroke-linecap="round"/><path d="${d}" fill="none" stroke="${cflat}" stroke-width="${w}" stroke-linecap="round"/>`;
+    let s = '<g class="can">';
+    // rear handle
+    s += tube('M-32 -58C-58 -56 -60 -18 -33 -13', 6);
+    // spout (tapered tube) and its brace
+    const spout = BD.util.ribbon([[26, -16], [60, -43], [94, -70], [126, -93.5]], [12, 8.5, 6.5, 5.5]).d;
+    s += `<path d="${spout}" fill="${cflat}" ${S}/>`;
+    if (era !== 2) s += `<path d="M38 -30L118 -92" stroke="${cl}" stroke-width="1.6" opacity=".7" stroke-linecap="round"/>`;
+    s += `<path d="M30 -50L66 -48" stroke="${l}" stroke-width="${4 + lw * 2}" stroke-linecap="round"/><path d="M30 -50L66 -48" stroke="${cd}" stroke-width="4" stroke-linecap="round"/>`;
+    // rose: a flared cone and a perforated disc, at right angles to the spout
+    s += `<g transform="translate(${ROSE[0]} ${ROSE[1]}) rotate(${SPOUT_ANG})">
+      <path d="M-15 -3.2L-3 -10L-3 10L-15 3.2Z" fill="${cflat}" ${S}/>
+      <ellipse cx="-1" cy="0" rx="4.5" ry="13" fill="${cd}" ${S}/>
+      <ellipse cx="1" cy="0" rx="2.8" ry="11.2" fill="${era === 2 ? '#fff' : cl}" ${S}/>
+      ${[-8.4, -5.6, -2.8, 0, 2.8, 5.6, 8.4].map((y) => `<circle cx="1.3" cy="${y}" r=".75" fill="${era === 2 ? '#111' : '#4a2410'}"/>`).join('')}
     </g>`;
+    // body
+    const body = 'M-34 -2Q-39 -34 -31 -66L31 -66Q39 -34 34 -2Q0 3 -34 -2Z';
+    s += `<path d="${body}" fill="${c}" ${S}/>`;
+    // form: shadow side, highlight streak, hammered dents
+    s += `<path d="M13 -65Q22 -34 17 -1Q27 0 34 -2Q39 -34 31 -66Z" fill="${era === 2 ? '#000' : cd}" opacity="${era === 2 ? 0.13 : 0.55}"/>`;
+    if (era === 2) {
+      let h = '';
+      for (let y = -60; y < -6; y += 5) h += `M20 ${y}l10 -4`;
+      s += `<path d="${h}" stroke="#111" stroke-width=".8"/>`;
+    } else {
+      s += `<path d="M-23 -60Q-28 -34 -24 -8" stroke="${era === 3 ? '#fff' : cl}" stroke-width="4" opacity="${era === 3 ? 0.65 : 0.7}" fill="none" stroke-linecap="round"/>`;
+      let dents = '';
+      const R = BD.util.rng(5);
+      for (let k = 0; k < 22; k++) { const x = -26 + R() * 50, y = -60 + R() * 52; dents += `M${f(x)} ${f(y)}a3 2 0 0 1 5 0`; }
+      s += `<path d="${dents}" stroke="${era === 3 ? '#fff' : cd}" stroke-width=".8" fill="none" opacity="${era === 3 ? 0.3 : 0.55}"/>`;
+    }
+    // rolled seams with rivets
+    [-10, -57].forEach((y) => {
+      s += `<path d="M${y < -30 ? -32 : -35} ${y}Q0 ${y + 4} ${y < -30 ? 32 : 35} ${y}" fill="none" stroke="${l}" stroke-width="${lw * 0.8}"/>`;
+      for (let x = -26; x <= 26; x += 13) s += `<circle cx="${x}" cy="${f(y + 1.6 - Math.abs(x) * 0.02)}" r="1.3" fill="${era === 2 ? '#111' : cd}"/>`;
+    });
+    // opening
+    s += `<ellipse cx="0" cy="-66" rx="31" ry="6" fill="${era === 2 ? '#fff' : cd}" ${S}/><ellipse cx="0" cy="-65.5" rx="26" ry="4" fill="${era === 2 ? '#111' : '#2a160c'}"/>`;
+    // top handle
+    s += tube('M-22 -66C-20 -96 18 -98 20 -66', 5);
+    s += '</g>';
+    return s;
+  }
+
+  // The can held over the soil (tilted while pouring) and a fine shower from the rose.
+  function pourMarkup(era, pourX, soilY, pouring) {
+    const TILT = 36, IDLE = 8, K = 0.85;
+    const rot = (p, a) => { const r = (a * Math.PI) / 180; return [p[0] * Math.cos(r) - p[1] * Math.sin(r), p[0] * Math.sin(r) + p[1] * Math.cos(r)]; };
+    const rw = rot([ROSE[0] * K, ROSE[1] * K], TILT);
+    const rose = [pourX - 12, soilY - 70];
+    const ox = rose[0] - rw[0], oy = rose[1] - rw[1];
+    const a = ((SPOUT_ANG + TILT) * Math.PI) / 180, dir = [Math.cos(a), Math.sin(a)], perp = [-Math.sin(a), Math.cos(a)];
+    const col = era === 2 ? '#444' : era === 3 ? '#c4f8ff' : '#6f9fd8';
+    let st = '';
+    for (let i = -3; i <= 3; i++) {
+      const sx = rose[0] + perp[0] * i * 2.4 * K + dir[0] * 3, sy = rose[1] + perp[1] * i * 2.4 * K + dir[1] * 3;
+      const ex = sx + dir[0] * 26 + i * 3.5, ey = soilY - 1;
+      const cx = sx + dir[0] * 22, cy = sy + dir[1] * 22 + 6;
+      st += `<path d="M${f(sx)} ${f(sy)}Q${f(cx)} ${f(cy)} ${f(ex)} ${f(ey)}" stroke-dasharray="${6 + (i & 1) * 3} 5"><animate attributeName="stroke-dashoffset" from="${i * 3}" to="${i * 3 - 22}" dur="${0.38 + (i & 1) * 0.08}s" repeatCount="indefinite"/></path>`;
+    }
+    let splash = '';
+    for (let i = 0; i < 6; i++) {
+      const x = rose[0] + dir[0] * 26 + (i - 2.5) * 5;
+      const dur = 0.5 + (i % 3) * 0.12;
+      splash += `<circle cx="${f(x)}" cy="${soilY - 2}" r="1.3" fill="${col}"><animate attributeName="cy" values="${soilY - 2};${soilY - 8 - (i % 3) * 2};${soilY - 2}" dur="${dur}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0" dur="${dur}s" repeatCount="indefinite"/></circle>`;
+    }
+    const tf = (t) => `translate(${f(ox)} ${f(oy)}) rotate(${t}) scale(${K})`;
+    return `<g id="pourCan" data-idle="${tf(IDLE)}" data-pour="${tf(TILT)}" transform="${tf(pouring ? TILT : IDLE)}">${wateringCan(era)}</g>
+      <g id="stream" opacity="${pouring ? 1 : 0}"><g fill="none" stroke="${col}" stroke-width="${era === 2 ? 1 : 1.3}" stroke-linecap="round" ${era === 3 ? 'filter="url(#glow)"' : ''}>${st}</g>${splash}</g>`;
   }
 
   function defsFor(era) {
@@ -227,8 +293,7 @@
     s += `<g id="cam">`;
     s += `<rect x="-2000" y="-2000" width="5000" height="5000" fill="${wallFill}"/>`;
     if (era === 1) s += `<rect x="-2000" y="-2000" width="5000" height="5000" fill="#fff" filter="url(#paperfx)" opacity=".5"/>`;
-    if (era === 2) s += `<rect x="-2000" y="-2000" width="5000" height="2030" fill="url(#tone-s)" opacity=".35"/>`;
-    s += `<g id="view" clip-path="url(#winClip)">${view(era, P)}</g>`;
+    s += `<g id="view" clip-path="url(#winClip)">${view(era, era === 2 ? Object.assign({}, P, { line: '#5a5a5a', lw: 1.3 }) : P)}</g>`;
     s += room(era, P);
     if (era === 3) {
       s += `<g id="shafts" style="mix-blend-mode:screen">
@@ -236,12 +301,12 @@
         <path d="M520 60 L600 60 L760 ${SILL_Y} L640 ${SILL_Y}Z" fill="url(#shaft)" opacity=".7"/></g>`;
     }
     // pot shadow + tree assembly
-    s += `<ellipse id="potShadow" cx="500" cy="${SILL_Y - 2}" rx="150" ry="9" fill="${era === 2 ? 'url(#tone-mt)' : '#000'}" opacity="${era === 2 ? 1 : 0.25}"/>`;
+    s += `<ellipse id="potShadow" cx="500" cy="${SILL_Y - 2}" rx="150" ry="9" fill="#000" opacity="${era === 2 ? 0.16 : 0.25}"/>`;
     s += `<g id="potWrap"><g id="potDefs"></g><g id="soilG"></g><g id="treeG"></g><g id="mossG"></g><g id="potBody"></g><g id="dripG"></g><g id="shootsG"></g></g>`;
-    s += `<g id="canRest" transform="translate(770 ${SILL_Y - 12}) scale(.62)">${wateringCan(era)}</g>`;
+    s += `<g id="canRest" transform="translate(772 ${SILL_Y - 5}) scale(.5)">${wateringCan(era)}</g>`;
     s += `<g id="fx"></g>`;
     s += `</g>`; // cam
-    s += `<rect id="tint" x="-2000" y="-2000" width="5000" height="5000" fill="${era === 2 ? 'url(#tone-s)' : '#2a1840'}" opacity="0" pointer-events="none" ${era === 2 ? '' : 'style="mix-blend-mode:multiply"'}/>`;
+    s += `<rect id="tint" x="-2000" y="-2000" width="5000" height="5000" fill="${era === 2 ? '#000' : '#2a1840'}" opacity="0" pointer-events="none" ${era === 2 ? '' : 'style="mix-blend-mode:multiply"'}/>`;
     s += `<rect id="warm" x="-2000" y="-2000" width="5000" height="5000" fill="#ff9a40" opacity="0" pointer-events="none" style="mix-blend-mode:soft-light"/>`;
     return s;
   }
@@ -266,7 +331,7 @@
     const stars = svg.querySelector('#stars');
     if (stars) stars.setAttribute('opacity', f(night));
     const tint = svg.querySelector('#tint');
-    if (tint) tint.setAttribute('opacity', f((era === 2 ? night * 0.55 : night * 0.32) * 100) / 100);
+    if (tint) tint.setAttribute('opacity', f((era === 2 ? night * 0.2 : night * 0.32) * 100) / 100);
     const warm = svg.querySelector('#warm');
     const golden = Math.max(0, 1 - Math.abs(t - 0.85) / 0.25) * 0.5 + Math.max(0, 0.12 - t) * 2;
     if (warm) warm.setAttribute('opacity', f(era === 2 ? 0 : golden * 100) / 100);
@@ -296,5 +361,5 @@
     if (v) v.style.filter = on ? (era === 2 ? 'contrast(.85) brightness(.92)' : 'grayscale(.75) brightness(.9)') : '';
   }
 
-  BD.scene = { build, setTime, setOvercast, wateringCan, SILL_Y, WIN };
+  BD.scene = { build, setTime, setOvercast, wateringCan, pourMarkup, SILL_Y, WIN };
 })();

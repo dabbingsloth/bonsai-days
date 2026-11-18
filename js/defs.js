@@ -73,12 +73,12 @@
 
   function build() {
     const maple = mapleOutline();
-    const needles = pineTuft(11, 15, 16), needlesB = pineTuft(23, 11, 13);
+    const needles = pineTuft(11, 15, 16), needlesB = pineTuft(23, 11, 13), needlesBack = pineTuft(37, 12, 14.5);
     const jun = juniperSpray();
     const candle = 'M-1.7 0Q-2.3 -8 0 -15Q2.3 -8 1.7 0Z';
     const eraLeaf = {
       1: { line: '#2b3420', lw: 0.55, needleW: 1.05, junLine: '#2a3d1f', junW: 0.4 },
-      2: { line: '#111', lw: 0.85, needleW: 1.0, junLine: '#111', junW: 0.55 },
+      2: { line: '#111', lw: 0.8, needleW: 0.75, junLine: '#111', junW: 0.5 },
       3: { line: 'none', lw: 0, needleW: 0.95, junLine: 'rgba(10,40,25,.35)', junW: 0.35 },
     };
     let leaves = '';
@@ -87,8 +87,12 @@
       leaves += `
       <g id="lf${e}-maple"><path d="${maple.d}" stroke="${s.line}" stroke-width="${s.lw}" stroke-linejoin="round"/>
         <path d="${maple.veins}" fill="none" stroke="currentColor" stroke-width="${e === 3 ? 0.45 : 0.5}" opacity="${e === 3 ? 0.55 : 0.9}"/></g>
-      <g id="lf${e}-pine"><path d="${needles}" fill="none" stroke="currentColor" stroke-width="${s.needleW}" stroke-linecap="round"/></g>
-      <g id="lf${e}-pineb"><path d="${needlesB}" fill="none" stroke="currentColor" stroke-width="${s.needleW}" stroke-linecap="round"/></g>
+      <g id="lf${e}-pine"><path d="${needlesBack}" fill="none" stroke="currentColor" stroke-width="${s.needleW}" stroke-linecap="round" opacity="${e === 2 ? 0.45 : 0.55}" transform="rotate(14) scale(.92)"/>
+        <path d="${needles}" fill="none" stroke="currentColor" stroke-width="${s.needleW}" stroke-linecap="round"/>
+        <path d="M-1.3 .5L0 -3.2L1.3 .5Z" fill="${e === 2 ? '#111' : '#6a4a30'}"/></g>
+      <g id="lf${e}-pineb"><path d="${needlesBack}" fill="none" stroke="currentColor" stroke-width="${s.needleW}" stroke-linecap="round" opacity=".5" transform="rotate(-12)"/>
+        <path d="${needlesB}" fill="none" stroke="currentColor" stroke-width="${s.needleW}" stroke-linecap="round"/>
+        <path d="M-1.2 .5L0 -2.8L1.2 .5Z" fill="${e === 2 ? '#111' : '#6a4a30'}"/></g>
       <g id="lf${e}-juniper"><path d="${jun}" stroke="${s.junLine}" stroke-width="${s.junW}"/></g>
       <g id="lf${e}-candle"><path d="${candle}" stroke="${e === 2 ? '#111' : e === 1 ? '#5a4030' : 'none'}" stroke-width="0.6"/></g>`;
     }

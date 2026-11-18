@@ -160,13 +160,13 @@
     const L = `stroke="${line}" stroke-width="${lw}" stroke-linejoin="round" stroke-linecap="round"`;
     const thin = era === 2 ? 2 : 1.3;
     const skin = era === 2 ? '#fff' : era === 1 ? '#f2dcbc' : 'url(#skinG)';
-    const skinShade = era === 2 ? 'url(#tone-s)' : era === 1 ? '#e2c49c' : '#e2b48f';
+    const skinShade = era === 2 ? '#ececec' : era === 1 ? '#e2c49c' : '#e2b48f';
     let bg = '', defs = '';
     if (era === 1) bg = `<rect width="200" height="220" fill="#ead9b4"/><rect y="150" width="200" height="70" fill="url(#seigaiha)" opacity=".9"/><rect width="200" height="220" fill="#fff" filter="url(#paperfx)" opacity=".4"/>`;
     if (era === 2) {
       let lines = '';
       for (let i = 0; i < 40; i++) { const a = (i / 40) * Math.PI * 2; lines += `M${f(100 + Math.cos(a) * 70)} ${f(110 + Math.sin(a) * 70)}L${f(100 + Math.cos(a) * 200)} ${f(110 + Math.sin(a) * 200)}`; }
-      bg = `<rect width="200" height="220" fill="#fff"/><path d="${lines}" stroke="#111" stroke-width="1.2"/>`;
+      bg = `<rect width="200" height="220" fill="#fff"/><path d="${lines}" stroke="#bdbdbd" stroke-width="1"/>`;
     }
     if (era === 3) {
       defs = `<defs><radialGradient id="pbg-${who}" cx=".3" cy=".25" r="1"><stop offset="0" stop-color="${who === 'aoi' ? '#ffb2d0' : '#ffd9a0'}"/><stop offset=".55" stop-color="${who === 'aoi' ? '#7a6cf0' : '#5c8ee8'}"/><stop offset="1" stop-color="#1f2350"/></radialGradient>
@@ -176,7 +176,7 @@
     }
     let s = defs + bg;
     if (who === 'sensei') {
-      const cloth = era === 2 ? 'url(#tone-l)' : era === 1 ? '#2d4a7a' : 'url(#cloth-sensei)';
+      const cloth = era === 2 ? '#a9a9a9' : era === 1 ? '#2d4a7a' : 'url(#cloth-sensei)';
       // shoulders in a samue work jacket
       s += `<path d="M14 222 C18 186 46 168 72 162 L128 162 C154 168 182 186 186 222Z" fill="${cloth}" ${L}/>`;
       s += `<path d="M84 160 L100 196 L116 160Z" fill="${era === 2 ? '#fff' : '#efe6d4'}" ${L}/>`;
@@ -185,7 +185,7 @@
       // ears + head
       s += `<ellipse cx="57" cy="104" rx="9" ry="14" fill="${skin}" ${L}/><ellipse cx="143" cy="104" rx="9" ry="14" fill="${skin}" ${L}/>`;
       s += `<ellipse cx="100" cy="96" rx="43" ry="52" fill="${skin}" ${L}/>`;
-      if (era === 2) s += `<path d="M118 60 C140 80 144 120 126 146 C138 120 136 86 118 60Z" fill="url(#tone-s)"/>`;
+      if (era === 2) s += `<path d="M118 60 C140 80 144 120 126 146 C138 120 136 86 118 60Z" fill="#e6e6e6"/>`;
       if (era === 3) s += `<ellipse cx="86" cy="62" rx="16" ry="8" fill="#fff" opacity=".5"/>`;
       // white side hair
       const hair = era === 2 ? '#fff' : era === 3 ? '#f4f2ff' : '#f2efe6';
@@ -207,7 +207,7 @@
       if (era !== 1) s += `<ellipse cx="72" cy="118" rx="7" ry="4" fill="${era === 2 ? 'url(#hatch)' : '#ff9a8a'}" opacity="${era === 2 ? 0.6 : 0.35}"/><ellipse cx="128" cy="118" rx="7" ry="4" fill="${era === 2 ? 'url(#hatch)' : '#ff9a8a'}" opacity="${era === 2 ? 0.6 : 0.35}"/>`;
     } else {
       const shirt = era === 2 ? '#fff' : era === 1 ? '#d9a43a' : '#ffcf6a';
-      const apron = era === 2 ? 'url(#tone-l)' : era === 1 ? '#2d4a7a' : 'url(#cloth-aoi)';
+      const apron = era === 2 ? '#8f8f8f' : era === 1 ? '#2d4a7a' : 'url(#cloth-aoi)';
       const hair = era === 2 ? '#111' : era === 1 ? '#1d1a1e' : '#2a2340';
       s += `<path d="M22 222 C26 188 52 170 76 166 L124 166 C148 170 174 188 178 222Z" fill="${shirt}" ${L}/>`;
       s += `<path d="M60 222 L64 186 L136 186 L140 222Z" fill="${apron}" ${L}/>`;
@@ -218,7 +218,7 @@
       // hair behind head
       s += `<path d="M54 96 C50 52 150 52 146 96 L150 146 C134 152 120 140 118 132 L82 132 C80 140 66 152 50 146Z" fill="${hair}" ${L}/>`;
       s += `<ellipse cx="100" cy="100" rx="38" ry="46" fill="${skin}" ${L}/>`;
-      if (era === 2) s += `<path d="M120 70 C138 90 136 124 118 142 C130 118 130 90 120 70Z" fill="url(#tone-s)"/>`;
+      if (era === 2) s += `<path d="M120 70 C138 90 136 124 118 142 C130 118 130 90 120 70Z" fill="#e6e6e6"/>`;
       // bangs
       s += `<path d="M60 92 C58 54 142 50 140 92 C132 78 124 72 120 84 C114 70 104 68 100 82 C94 68 82 70 78 84 C72 76 64 80 60 92Z" fill="${hair}" ${L}/>`;
       if (era !== 1) s += `<path d="M80 64 q12 -6 26 -2" stroke="#fff" stroke-width="${era === 2 ? 3 : 2}" fill="none" opacity="${era === 2 ? 1 : 0.5}" stroke-linecap="round"/>`;
@@ -267,7 +267,7 @@
       let lines = '';
       const R = rng(9);
       for (let i = 0; i < 160; i++) { const a = (i / 160) * Math.PI * 2 + R() * 0.02; const r0 = 260 + R() * 120; lines += `M${f(800 + Math.cos(a) * r0)} ${f(450 + Math.sin(a) * r0)}L${f(800 + Math.cos(a) * 1400)} ${f(450 + Math.sin(a) * 1400)}`; }
-      return `<svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="1600" height="900" fill="#fff"/><rect width="1600" height="900" fill="url(#tone-s)" opacity=".5"/><path d="${lines}" stroke="#111" stroke-width="2.4"/></svg>`;
+      return `<svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="1600" height="900" fill="#fff"/><path d="${lines}" stroke="#222" stroke-width="2"/></svg>`;
     }
     const R = rng(3);
     let dots = '';
