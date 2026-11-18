@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Bonsai Days</title>
+  <meta name="description" content="Bonsai Days: care for a bonsai tree over fifteen days and learn the history of bonsai and Japanese culture, told in three art styles.">
+  <meta name="theme-color" content="#1b2f57">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Shippori+Mincho:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="era-1">
+  <!-- shared SVG definitions (leaf shapes, screentones, filters) -->
+  <svg id="global-defs" aria-hidden="true" focusable="false"></svg>
+
+  <!-- TITLE -->
+  <section id="title" class="screen" aria-label="Title screen">
+    <svg id="title-art" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+    <h1 class="cartouche title-cart"><span class="jp">盆栽の日々</span><span class="en">Bonsai Days</span></h1>
+    <div class="title-seal" aria-hidden="true">春</div>
+    <div class="title-bottom">
+      <div class="loadwrap" style="width:100%;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div class="loadbar"><i></i></div>
+        <div class="load-text">Grinding ink…</div>
+      </div>
+      <button id="start-btn" class="btn-print begin" hidden>Begin · はじめる</button>
+    </div>
+    <div class="title-credit">A game about patience</div>
+  </section>
+
+  <!-- TREE SELECTION -->
+  <section id="select" class="screen paper-grain" hidden aria-label="Choose your tree">
+    <div class="wrap">
+      <div class="sel-head">
+        <h2 class="cartouche sel-title">Choose your tree<small>木を選ぶ</small></h2>
+        <div id="continue-wrap" class="continue" hidden>
+          <button id="continue-btn" class="btn-print red">Continue</button>
+          <span id="continue-meta" class="meta"></span>
+        </div>
+      </div>
+      <p class="sel-intro">Haruki-sensei keeps bonsai in Ōmiya, Saitama. He will give you a seedling and let you visit it on his windowsill. Over fifteen days you will water it, prune it, shape it, and hear how this art travelled from China to Japan and around the world.</p>
+      <div class="cards"></div>
+      <div class="sel-foot">Progress is saved in this browser. <button id="reset-save">Delete saved tree</button></div>
+    </div>
+    <svg class="waves" viewBox="0 0 1600 90" preserveAspectRatio="none" aria-hidden="true"><rect width="1600" height="90" fill="url(#seigaiha)"/></svg>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" class="screen" hidden aria-label="Bonsai Days">
+    <svg id="scene" aria-label="Your bonsai on a windowsill" role="img"></svg>
+    <canvas id="particles" aria-hidden="true"></canvas>
+    <div id="tex" aria-hidden="true"></div>
+    <div id="hud">
+      <div id="daylabel"></div>
+      <div class="hud-btns">
+        <button id="journal-btn" class="hud-btn" aria-label="Open journal (J)">Journal<span id="jdot" class="dot" hidden></span></button>
+        <button id="menu-btn" class="hud-btn">Menu</button>
+      </div>
+    </div>
+    <div id="dialogue" class="hide">
+      <div id="portrait" aria-hidden="true"></div>
+      <div class="dbox" role="button" tabindex="0" aria-label="Continue dialogue">
+        <div class="dname"></div>
+        <div class="dtext"></div>
+        <div class="dnext" aria-hidden="true">▼</div>
+      </div>
+    </div>
+    <div id="sr-line" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)"></div>
+    <div id="activity" hidden></div>
+    <div id="caption" aria-live="polite"></div>
+    <div id="daycard" aria-hidden="true"></div>
+    <div id="toast" role="status"></div>
+    <div id="fade"></div>
+  </section>
+
+  <section id="epilogue" class="screen" hidden aria-label="Epilogue"></section>
+  <section id="chapter" class="overlay" hidden></section>
+  <section id="journal" class="overlay" hidden></section>
+  <div id="confirm" hidden></div>
+
+  <noscript><p style="color:#fff;padding:20px">Bonsai Days needs JavaScript to grow its trees.</p></noscript>
+
+  <script src="js/util.js"></script>
+  <script src="js/defs.js"></script>
+  <script src="js/tree.js"></script>
+  <script src="js/scene.js"></script>
+  <script src="js/art.js"></script>
+  <script src="js/story.js"></script>
+  <script src="js/game.js"></script>
+  <script>BD.game.boot();</script>
+</body>
+</html>
